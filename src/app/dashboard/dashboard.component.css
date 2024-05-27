@@ -1,0 +1,47 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .mat-toolbar {
+    background-color: #ebab01; /* Your desired color */
+    color: white; /* Text color */
+  }
+  .admin-icon {
+    font-size: 24px; /* Adjust the size of the icon */
+    margin-left: auto; /* Pushes the icon to the right */
+    margin-right: 16px; /* Adds some space between the icon and other content */
+  }
+  .sidenav-container {
+    flex: 1;
+    display: flex;
+    height: 100%;
+  }
+  
+  .sidenav {
+    background-color: #ebab01; /* Change this to your desired color */
+    color: white;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-item mat-icon {
+    margin-right: 10px;
+  }
+  
+  .nav-item:hover {
+    background-color: #ffcc00; /* Darker shade for hover */
+  }
+  
+  .active {
+    background-color: #cc8800; /* Active link color */
+  }
+  

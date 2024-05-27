@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1>Dashboard</h1>
+      <!-- Add the label here -->
+      <mat-icon class="admin-icon">admin_panel_settings</mat-icon>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" class="sidenav">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard/categories" routerLinkActive="active" class="nav-item">
+          <mat-icon>category</mat-icon>
+          Categories
+        </a>
+        <a mat-list-item routerLink="/dashboard/services" routerLinkActive="active" class="nav-item">
+          <mat-icon>build</mat-icon>
+          Services
+        </a>
+        <a mat-list-item routerLink="/dashboard/users" routerLinkActive="active" class="nav-item">
+          <mat-icon>people</mat-icon>
+          Users
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

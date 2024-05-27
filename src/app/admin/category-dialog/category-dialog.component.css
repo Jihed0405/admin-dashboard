@@ -1,0 +1,50 @@
+.form-container {
+    margin-bottom: 24px; /* Add space between form field and dialog actions */
+  }
+  
+  .mat-dialog-content {
+    padding: 24px; /* Add padding to the dialog content */
+  }
+  
+  .mat-dialog-actions {
+    justify-content: flex-end; /* Align actions to the right */
+  }
+  
+  /* Button styles */
+  button {
+    margin-left: 8px; /* Add space between buttons */
+  }
+  ::ng-deep .mat-mdc-snack-bar-container.success-snackbar {
+    --mdc-snackbar-container-color: #43a047;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  /* Define custom styles for the snackbar */
+ 
+  ::ng-deep .mat-mdc-snack-bar-container.error-snackbar {
+    --mdc-snackbar-container-color: #d32f2f;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  
+  /* Add animation */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .mat-dialog-container {
+    animation: slideIn 0.3s ease-in-out; /* Apply animation to the dialog container */
+  }
+  .mat-error {
+    color: red; /* Change text color to red */
+    font-size: 14px; /* Adjust font size */
+    margin-top: 4px; /* Add some space between input field and error message */
+  }
+  

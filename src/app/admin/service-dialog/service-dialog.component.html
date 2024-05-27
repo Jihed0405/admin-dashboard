@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ service.id ? 'Edit Service' : 'Add Service' }}</h2>
+<mat-dialog-content>
+  <form #serviceForm="ngForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="service.name" name="serviceName" required>
+      <mat-error *ngIf="serviceForm.controls['serviceName'].invalid && serviceForm.controls['serviceName'].touched">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select mat-select [(ngModel)]="service['category']" name="serviceCategory" required>
+        <mat-option *ngFor="let category of categories" [value]="category">{{ category.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="serviceForm.controls['serviceCategory'].invalid && serviceForm.controls['serviceCategory'].touched">
+        Category is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="warn" (click)="close()">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button mat-button [disabled]="serviceForm.invalid" color="primary" (click)="save()">
+    <mat-icon>save</mat-icon> Save
+  </button>
+ 
+</mat-dialog-actions>

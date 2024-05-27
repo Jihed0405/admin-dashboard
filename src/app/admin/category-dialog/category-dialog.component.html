@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>{{ category.id ? 'Edit Category' : 'Add Category' }}</h2>
+<mat-dialog-content>
+  <div class="form-container">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="category.name" required>
+      <mat-error *ngIf="!category.name">Name is required</mat-error>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="warn" (click)="close()">
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+  <button mat-button color="primary" (click)="save()">
+    <mat-icon>save</mat-icon> Save
+  </button>
+</mat-dialog-actions>

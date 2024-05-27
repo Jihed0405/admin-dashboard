@@ -1,0 +1,41 @@
+.category_class {
+    margin-top: 20px; /* Add margin from the top */
+    margin-left: 20px; /* Add margin from the left */
+    margin-right: 20px;
+    margin-bottom: 20px; /* Add margin from the right */
+  }
+
+ 
+  ::ng-deep .mat-mdc-snack-bar-container.success-snackbar {
+    --mdc-snackbar-container-color: #43a047;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  /* Define custom styles for the snackbar */
+ 
+  ::ng-deep .mat-mdc-snack-bar-container.error-snackbar {
+    --mdc-snackbar-container-color: #d32f2f;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+  
+  
+  
+.table-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .add-button {
+    margin-bottom: 20px;
+  }
+  
+  .mat-table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .mat-cell, .mat-header-cell {
+    padding: 10px;
+  }
+  
