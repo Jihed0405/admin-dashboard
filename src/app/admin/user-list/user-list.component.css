@@ -4,6 +4,42 @@
     margin-right: 20px;
     margin-bottom: 20px; /* Add margin from the right */
   }
+  /* user-list.component.css */
+
+.user-table {
+  margin-bottom: 20px; /* Add space below each table */
+}
+.button-space {
+  width: 20px; /* Adjust this value as needed */
+}
+.add-button-container {
+ 
+  justify-content: space-between;
+  margin-bottom: 20px; /* Optional: Add margin bottom for spacing */
+}
+
+.add-button {
+  flex: 1;
+  padding: 8px 16px; 
+  font-size: 14px; 
+}
+
+.add-button:not(:last-child) {
+  margin-right: 20px; 
+}
+.table-title {
+  margin-bottom: 20px; /* Space between title and button */
+}
+
+.add-button {
+  margin-bottom: 20px; /* Space between button and first table */
+}
+
+h3 {
+  margin-top: 40px; /* Space between tables (if needed) */
+  margin-bottom: 10px; /* Space between the heading and table */
+}
+
   ::ng-deep .mat-mdc-snack-bar-container.success-snackbar {
     --mdc-snackbar-container-color: #43a047;
     --mat-mdc-snack-bar-button-color: #fff;

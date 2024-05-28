@@ -1,58 +1,89 @@
 <div class="user-dialog-container">
   <h2>{{ user.id ? 'Edit User' : 'Add User' }}</h2>
-   <div style="max-height: 300px; overflow-y: auto;">
-  <form (ngSubmit)="save()" #userForm="ngForm">
-    <mat-form-field>
-      <mat-label>First Name</mat-label>
-      <input matInput placeholder="Enter First Name" name="firstName" [(ngModel)]="user.firstName" required>
-      <mat-error *ngIf="userForm.controls['firstName'].invalid && userForm.controls['firstName'].touched">
-        <mat-icon>error</mat-icon> First Name is required
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Last Name</mat-label>
-      <input matInput placeholder="Enter Last Name" name="lastName" [(ngModel)]="user.lastName" required>
-      <mat-error *ngIf="userForm.controls['lastName'].invalid && userForm.controls['lastName'].touched">
-        <mat-icon>error</mat-icon> Last Name is required
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="Enter Email" type="email" name="email" [(ngModel)]="user.email" required>
-      <mat-error *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched">
-        <mat-icon>error</mat-icon> Invalid email address
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Phone Number</mat-label>
-      <input matInput placeholder="Enter Phone Number" name="phoneNumber" [(ngModel)]="user.phoneNumber">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Address</mat-label>
-      <input matInput placeholder="Enter Address" name="address" [(ngModel)]="user.address">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input matInput placeholder="Enter Password" type="password" name="password" [(ngModel)]="user.password" required>
-      <mat-error *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched">
-        <mat-icon>error</mat-icon> Password is required
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Photo URL</mat-label>
-      <input matInput placeholder="Enter Photo URL" name="photoUrl" [(ngModel)]="user.photoUrl">
-    </mat-form-field>
-  </form>
-  </div>
-    <!-- Buttons -->
-    <mat-dialog-actions>
-      <button mat-button color="warn" (click)="close()">
-        <mat-icon>cancel</mat-icon> Cancel
-      </button>
-      <button mat-button color="primary" (click)="save()">
-        <mat-icon>save</mat-icon> Save
-      </button>
-    </mat-dialog-actions>
-  
+  <div style="max-height: 300px; overflow-y: auto;">
+    <form (ngSubmit)="save()" #userForm="ngForm">
+      <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="Enter First Name" name="firstName" [(ngModel)]="user.firstName" required>
+        <mat-error *ngIf="userForm.controls['firstName'].invalid && userForm.controls['firstName'].touched">
+          <mat-icon>error</mat-icon> First Name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Enter Last Name" name="lastName" [(ngModel)]="user.lastName" required>
+        <mat-error *ngIf="userForm.controls['lastName'].invalid && userForm.controls['lastName'].touched">
+          <mat-icon>error</mat-icon> Last Name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Enter Email" type="email" name="email" [(ngModel)]="user.email" required>
+        <mat-error *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched">
+          <mat-icon>error</mat-icon> Invalid email address
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone Number</mat-label>
+        <input matInput placeholder="Enter Phone Number" name="phoneNumber" [(ngModel)]="user.phoneNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input matInput placeholder="Enter Address" name="address" [(ngModel)]="user.address">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Enter Password" type="password" name="password" [(ngModel)]="user.password" required>
+        <mat-error *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched">
+          <mat-icon>error</mat-icon> Password is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Photo URL</mat-label>
+        <input matInput placeholder="Enter Photo URL" name="photoUrl" [(ngModel)]="user.photoUrl">
+      </mat-form-field>
 
+      <div *ngIf="userType === 'SERVICE_PROVIDER'">
+        <mat-form-field>
+          <mat-label>Bio</mat-label>
+          <input matInput placeholder="Enter Bio" name="bio" [(ngModel)]="user.bio" required>
+          <mat-error *ngIf="userForm.controls['bio'].invalid && userForm.controls['bio'].touched">
+            <mat-icon>error</mat-icon> Bio is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Number of Experiences</mat-label>
+          <input matInput type="number" placeholder="Enter Number of Experiences" name="numberOfExperiences" [(ngModel)]="user.numberOfExperiences" required>
+          <mat-error *ngIf="userForm.controls['numberOfExperiences'].invalid && userForm.controls['numberOfExperiences'].touched">
+            <mat-icon>error</mat-icon> Number of Experiences is required
+          </mat-error>
+        </mat-form-field>
+        <h3>Services</h3>
+        <div *ngFor="let service of selectedServices; let i = index">
+          <mat-form-field>
+            <mat-label>Select Service</mat-label>
+            <mat-select [(ngModel)]="selectedServices[i]" name="service-{{i}}">
+              <mat-option *ngFor="let availableService of availableServices" [value]="availableService">
+                {{ availableService.name }}
+              </mat-option>
+            </mat-select>
+            <button mat-icon-button color="warn" type="button" (click)="removeService(i)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <button mat-button color="primary" type="button" (click)="addService()">
+          <mat-icon>add_circle</mat-icon> Add Service
+        </button>
+      </div>
+    </form>
+  </div>
+  <mat-dialog-actions>
+    <button mat-button color="warn" (click)="close()">
+      <mat-icon>cancel</mat-icon> Cancel
+    </button>
+    <button mat-button color="primary" type="button" (click)="userForm.ngSubmit.emit()">
+      <mat-icon>save</mat-icon> Save
+    </button>
+  </mat-dialog-actions>
 </div>

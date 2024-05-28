@@ -1,3 +1,5 @@
+import { UserType } from "./user-type.enum";
+
 export interface User {
     id: number| null;
     firstName: string;
@@ -7,5 +9,6 @@ export interface User {
     phoneNumber: string;
     address: string;
     photoUrl?: string; 
+ 
   }
   

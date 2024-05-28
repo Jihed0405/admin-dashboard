@@ -11,7 +11,9 @@ export class CategoryService {
 
   private apiUrl = `${BASE_URL}/api/categories`;
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.handleError = this.handleError.bind(this);
+  }
 
   getAllCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(this.apiUrl);
@@ -38,15 +40,44 @@ export class CategoryService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = '';
+    let errorMessage = 'An unknown error occurred. Please try again.';
+
     if (error.error instanceof ErrorEvent) {
-        // Client-side error
         errorMessage = `Error: ${error.error.message}`;
     } else {
-      console.log(error);
-        // Server-side error
-        errorMessage = ` ${error.error}`;
+        if (error.status === 0) {
+            errorMessage = 'No connection. Verify application is running.';
+        } else if (error.status >= 400 && error.status < 500) {
+            if (typeof error.error === 'string') {
+                try {
+                    const serverError = JSON.parse(error.error);
+                    if (serverError.message) {
+                        errorMessage = this.extractAndSortMessages(serverError.message);
+                    }
+                } catch (e) {
+                    errorMessage = error.error;
+                }
+            } else if (error.error.message) {
+                errorMessage = this.extractAndSortMessages(error.error.message);
+            }
+        } else if (error.status >= 500) {
+            if (error) {
+                console.log(error.error.message);
+                errorMessage = this.extractAndSortMessages(error.error.message);
+            } else {
+                errorMessage = 'Server-side error. Please try again later.';
+            }
+        }
     }
+console.log(errorMessage);
     return throwError(errorMessage);
   }
+
+  private extractAndSortMessages(messages: string): string {
+    const messageArray = messages.split(': ');
+    if (messageArray.length < 2) return ''; // Ensure there is at least one colon-separated part
+    const message = messageArray.slice(1).join(': '); // Extract the message without the prefix and suffix
+    return message;
+  }
+  
 }

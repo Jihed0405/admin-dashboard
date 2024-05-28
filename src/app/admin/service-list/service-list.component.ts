@@ -27,6 +27,8 @@ export class ServiceListComponent implements OnInit {
     this.serviceEntityService.getAllServices().subscribe({
       next: (data) => {
         this.services = data;
+        console.log(this.services);
+        this.services.sort((a, b) => a.id! - b.id!);
       },
       error: (err) => {
         console.error('Error loading services', err);

@@ -23,8 +23,12 @@ export class CategoryDialogComponent {
 
   save(): void {
     if (this.category.id) {
-      this.categoryService.updateCategory(this.category.id, this.category).subscribe(() => {
+      this.categoryService.updateCategory(this.category.id, this.category).subscribe(
+        () => {
         this.dialogRef.close(true);
+      },
+      (error) => {
+        this.notificationService.showNotification(error, 'error-snackbar');
       });
     } else {
       if (!this.category.name) {
@@ -33,6 +37,9 @@ export class CategoryDialogComponent {
       }
       this.categoryService.createCategory(this.category).subscribe(() => {
         this.dialogRef.close(true);
+      },
+      (error) => {
+        this.notificationService.showNotification(error, 'error-snackbar');
       });
     }
   }

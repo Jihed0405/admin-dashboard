@@ -23,6 +23,7 @@ export class CategoryListComponent implements OnInit {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
         this.categories = data;
+        this.categories.sort((a, b) => a.id! - b.id!);
       },
       error: (err) => {
         console.error('Error loading categories', err);

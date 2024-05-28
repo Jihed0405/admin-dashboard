@@ -16,6 +16,11 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
   }
+  getUsersByType(userType: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/byType`, { params: { userType } }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   createUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/create`, user).pipe(
