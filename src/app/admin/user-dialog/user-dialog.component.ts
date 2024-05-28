@@ -35,20 +35,31 @@ export class UserDialogComponent {
     }
   
     // Check if the email is valid
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /*const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(this.user.email)) {
       this.notificationService.showNotification('Please enter a valid email address', 'error-snackbar');
       return;
-    }
+    }*/
     if (this.user.id) {
-      this.userService.updateUser(this.user.id, this.user).subscribe(() => {
+      const updateUserRequest = {
+        updatedUser: this.user
+      };
+      this.userService.updateUser(this.user.id, updateUserRequest).subscribe(() => {
         this.dialogRef.close(true);
-      });
+      },
+      (error) => {
+        this.notificationService.showNotification(error.message, 'error-snackbar');
+      }
+    );
     } else {
 
       this.userService.createUser(this.user).subscribe(() => {
         this.dialogRef.close(true);
-      });
+      },
+      (error) => {
+        this.notificationService.showNotification(error, 'error-snackbar');
+      }
+    );
     }
   }
 

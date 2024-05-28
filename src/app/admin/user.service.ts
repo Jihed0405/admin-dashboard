@@ -1,33 +1,82 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { User } from './Models/user.model';
 import { BASE_URL } from './const/consts';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
- 
   private apiUrl = `${BASE_URL}/api/users`;
+
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<User[]> {
-    // Assuming you have a method for fetching all users
     return this.http.get<User[]>(this.apiUrl);
   }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/create`, user);
+    return this.http.post<User>(`${this.apiUrl}/create`, user).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+  updateUser(id: number, updateUserRequest: any): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, updateUserRequest).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 
   deleteUser(id: number): Observable<void> {
-    // Assuming there's a delete method for users
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'An unknown error occurred. Please try again.';
+
+    if (error.error instanceof ErrorEvent) {
+        errorMessage = `Error: ${error.error.message}`;
+    } else {
+        if (error.status === 0) {
+            errorMessage = 'No connection. Verify application is running.';
+        } else if (error.status >= 400 && error.status < 500) {
+            if (typeof error.error === 'string') {
+                try {
+                    const serverError = JSON.parse(error.error);
+                    if (serverError.message) {
+                        errorMessage = this.extractAndSortMessages(serverError.message);
+                    }
+                } catch (e) {
+                    errorMessage = error.error;
+                }
+            } else if (error.error.message) {
+                errorMessage = this.extractAndSortMessages(error.error.message);
+            }
+        } else if (error.status >= 500) {
+            if (error) {
+                console.log(error);
+                errorMessage = this.extractAndSortMessages(error.error.message);
+            } else {
+                errorMessage = 'Server-side error. Please try again later.';
+            }
+        }
+    }
+
+    return throwError(errorMessage);
+  }
+
+  private extractAndSortMessages(messages: string): string {
+    const messageArray = messages.split(', ');
+    const sortedMessages = messageArray.sort();
+    const cleanedMessages = sortedMessages.map(message => {
+      const splitMessage = message.split(': ');
+      return splitMessage.length > 1 ? splitMessage[1] : splitMessage[0];
+    });
+    return cleanedMessages.join(', ');
+  }
+  
 }

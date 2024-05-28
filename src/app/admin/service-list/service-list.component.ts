@@ -8,14 +8,15 @@ import { NotificationService } from '../notification.service';
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
-  styleUrls: ['./service-list.component.css']
+  styleUrls: ['./service-list.component.css'],
 })
 export class ServiceListComponent implements OnInit {
   services: ServiceEntity[] = [];
 
   constructor(
     private serviceEntityService: ServiceEntityService,
-    private dialog: MatDialog,private notificationService: NotificationService
+    private dialog: MatDialog,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -23,27 +24,46 @@ export class ServiceListComponent implements OnInit {
   }
 
   loadServices(): void {
-    this.serviceEntityService.getAllServices().subscribe(data => {
-      this.services = data;
+    this.serviceEntityService.getAllServices().subscribe({
+      next: (data) => {
+        this.services = data;
+      },
+      error: (err) => {
+        console.error('Error loading services', err);
+      },
     });
   }
 
   deleteService(id: number): void {
-    this.serviceEntityService.deleteService(id).subscribe(() => {
-      this.notificationService.showNotification('Service deleted successfully', 'success-snackbar');
-      this.loadServices();
+    this.serviceEntityService.deleteService(id).subscribe({
+      next: () => {
+        this.notificationService.showNotification(
+          'Service deleted successfully',
+          'success-snackbar'
+        );
+        this.loadServices();
+      },
+      error: (errorMessage) => {
+        this.notificationService.showNotification(
+          errorMessage,
+          'error-snackbar'
+        );
+      },
     });
   }
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ServiceDialogComponent, {
       width: '400px',
-      data: { service: null }
+      data: { service: null },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.notificationService.showNotification('Service saved successfully', 'success-snackbar');
+        this.notificationService.showNotification(
+          'Service added successfully',
+          'success-snackbar'
+        );
         this.loadServices();
       }
     });
@@ -52,12 +72,15 @@ export class ServiceListComponent implements OnInit {
   openEditDialog(service: ServiceEntity): void {
     const dialogRef = this.dialog.open(ServiceDialogComponent, {
       width: '400px',
-      data: { service }
+      data: { service },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.notificationService.showNotification('Service edited successfully', 'success-snackbar');
+        this.notificationService.showNotification(
+          'Service edited successfully',
+          'success-snackbar'
+        );
         this.loadServices();
       }
     });

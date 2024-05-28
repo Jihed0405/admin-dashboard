@@ -20,15 +20,28 @@ export class CategoryListComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe(data => {
-      this.categories = data;
+    this.categoryService.getAllCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => {
+        console.error('Error loading categories', err);
+      }
     });
   }
 
   deleteCategory(id: number): void {
-    this.categoryService.deleteCategory(id).subscribe(() => {
-      this.notificationService.showNotification('Category deleted successfully',"success-snackbar");
-      this.loadCategories();
+    this.categoryService.deleteCategory(id).subscribe( {
+      next: () => {
+        this.notificationService.showNotification('Category deleted successfully',"success-snackbar");
+        this.loadCategories();
+    },
+    error: (errorMessage) => {
+        // Display the error message on the UI
+        this.notificationService.showNotification(errorMessage,"error-snackbar");
+        
+    }
+     
     });
   }
   openAddDialog(): void {
