@@ -1,0 +1,20 @@
+.error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  /* styles.scss */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-card {
+    width: 300px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  

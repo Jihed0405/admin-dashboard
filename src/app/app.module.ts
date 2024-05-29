@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CategoryDialogComponent } from './admin/category-dialog/category-dialog.component';
 import { ServiceDialogComponent } from './admin/service-dialog/service-dialog.component';
@@ -25,6 +25,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './AuthGuard';
+import { AuthInterceptor } from './auth.interceptor';
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,9 +38,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     CategoryDialogComponent,
     ServiceDialogComponent,
     UserDialogComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
+    MatCardModule,
     MatSnackBarModule,
     MatSelectModule,
     MatToolbarModule,
@@ -55,8 +61,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatFormFieldModule,
     MatDialogModule,
   ],
-  providers: [
-    provideAnimationsAsync()
+  providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    AuthGuard
+    
   ],
   bootstrap: [AppComponent]
 })

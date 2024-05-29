@@ -6,7 +6,9 @@
       <h1>Dashboard</h1>
       <!-- Add the label here -->
       <mat-icon class="admin-icon">admin_panel_settings</mat-icon>
+      <button mat-button (click)="logout()" *ngIf="isLoggedIn()">Logout</button> 
     </mat-toolbar-row>
+   
   </mat-toolbar>
   
   <mat-sidenav-container class="sidenav-container">

@@ -10,7 +10,7 @@ import { BASE_URL } from './const/consts';
 })
 export class UserService {
   private apiUrl = `${BASE_URL}/api/users`;
-
+  private apiAuthUrl = `${BASE_URL}/api/authentication`;
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<User[]> {
@@ -23,7 +23,7 @@ export class UserService {
   }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/create`, user).pipe(
+    return this.http.post<User>(`${this.apiAuthUrl}/register`, user).pipe(
       catchError(this.handleError.bind(this))
     );
   }

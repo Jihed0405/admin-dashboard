@@ -39,6 +39,7 @@ export class UserDialogComponent {
       photoUrl: '',
       bio: '',
       numberOfExperiences: 0,
+      username:'',
       services: []
     };
     this.userType = data.userType;
