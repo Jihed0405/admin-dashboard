@@ -1,70 +1,91 @@
-<div class="users_class">
+  <div class="users_class">
 
-  <h2 class="table-title">Manage Users</h2>
-  <div class="add-button-container">
+    <h2 class="table-title">Manage Users</h2>
+    <div class="add-button-container">
+      <button mat-raised-button color="primary" class="add-button" (click)="openAddClientDialog()">
+        <mat-icon>add</mat-icon> Add Client
+      </button>
+      <button mat-raised-button color="primary" class="add-button" (click)="openAddServiceProviderDialog()">
+        <mat-icon>add</mat-icon> Add Service Provider
+      </button>
+    </div>
 
-  <button mat-raised-button color="primary" class="add-button" (click)="openAddClientDialog()">
-    <mat-icon>add</mat-icon> Add Client
-  </button>
+    <!-- Search Field -->
+    
 
+    <h3>Clients</h3>
+    <div class="search-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyClientFilter($event)" placeholder="Search Clients">
+      </mat-form-field>
+    </div>
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSourceClients" #clientSort="matSort" matSort class="mat-elevation-z8 user-table">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header > ID </th>
+          <td mat-cell *matCellDef="let client"> {{client.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header > Name </th>
+          <td mat-cell *matCellDef="let client"> {{client.firstName}} {{client.lastName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let client">
+            <button mat-icon-button color="primary" (click)="openEditClientDialog(client)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteClient(client.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['id', 'name', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'actions'];"></tr>
+      </table>
 
-  <button mat-raised-button color="primary" class="add-button" (click)="openAddServiceProviderDialog()">
-    <mat-icon>add</mat-icon> Add Service Provider
-  </button>
-</div>
+      <!-- Paginator for Clients -->
+      <mat-paginator #clientPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
 
-  <h3>Clients</h3>
-  <table mat-table [dataSource]="clients" class="mat-elevation-z8 user-table">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let client"> {{client.id}} </td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let client"> {{client.firstName}} {{client.lastName}} </td>
-    </ng-container>
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let client">
-        <button mat-icon-button color="primary" (click)="openEditClientDialog(client)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deleteClient(client.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['id', 'name', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'actions'];"></tr>
-  </table>
+    <h3>Service Providers</h3>
+    <div class="search-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyServiceProviderFilter($event)" placeholder="Search Service Providers">
+      </mat-form-field>
+    </div>
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSourceServiceProviders" #serviceProviderSort="matSort" matSort class="mat-elevation-z8 user-table">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header > ID </th>
+          <td mat-cell *matCellDef="let serviceProvider"> {{serviceProvider.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header > Name </th>
+          <td mat-cell *matCellDef="let serviceProvider"> {{serviceProvider.firstName}} {{serviceProvider.lastName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="bio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header > Bio </th>
+          <td mat-cell *matCellDef="let serviceProvider"> {{serviceProvider.bio}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let serviceProvider">
+            <button mat-icon-button color="primary" (click)="openEditServiceProviderDialog(serviceProvider)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteServiceProvider(serviceProvider.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['id', 'name', 'bio', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'bio', 'actions'];"></tr>
+      </table>
 
-
-  <h3>Service Providers</h3>
-  <table mat-table [dataSource]="serviceProviders" class="mat-elevation-z8 user-table">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let serviceProvider"> {{serviceProvider.id}} </td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let serviceProvider"> {{serviceProvider.firstName}} {{serviceProvider.lastName}} </td>
-    </ng-container>
-    <ng-container matColumnDef="bio">
-      <th mat-header-cell *matHeaderCellDef> Bio </th>
-      <td mat-cell *matCellDef="let serviceProvider"> {{serviceProvider.bio}} </td>
-    </ng-container>
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let serviceProvider">
-        <button mat-icon-button color="primary" (click)="openEditServiceProviderDialog(serviceProvider)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deleteServiceProvider(serviceProvider.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['id', 'name', 'bio', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'bio', 'actions'];"></tr>
-  </table>
-</div>
+      <!-- Paginator for Service Providers -->
+      <mat-paginator #serviceProviderPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>

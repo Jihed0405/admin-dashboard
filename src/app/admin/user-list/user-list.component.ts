@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { UserService } from '../user.service';
@@ -6,6 +6,9 @@ import { User } from '../Models/user.model';
 import { NotificationService } from '../notification.service';
 import { ServiceProviderService } from '../service-provider.service';
 import { ServiceProvider } from '../Models/serviceProvider';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-user-list',
@@ -15,7 +18,14 @@ import { ServiceProvider } from '../Models/serviceProvider';
 export class UserListComponent implements OnInit {
   clients: User[] = [];
   serviceProviders: ServiceProvider[] = [];
+  dataSourceClients!: MatTableDataSource<User>;
+  dataSourceServiceProviders!: MatTableDataSource<ServiceProvider>;
 
+  @ViewChild('clientPaginator') clientPaginator!: MatPaginator;
+  @ViewChild('serviceProviderPaginator') serviceProviderPaginator!: MatPaginator;
+  @ViewChild('clientSort') clientSort!: MatSort;
+  @ViewChild('serviceProviderSort') serviceProviderSort!: MatSort;
+ 
   constructor(
     private userService: UserService,
     private serviceProviderService: ServiceProviderService,
@@ -27,12 +37,19 @@ export class UserListComponent implements OnInit {
     this.loadClients();
     this.loadServiceProviders();
   }
-
+  ngAfterViewInit() {
+    
+    
+  }
   loadClients(): void {
     this.userService.getUsersByType('CLIENT').subscribe({
       next: (data) => {
+        data.sort((a, b) => a.id! - b.id!);
         this.clients = data;
-        this.clients.sort((a, b) => a.id! - b.id!);
+        this.dataSourceClients = new MatTableDataSource(data);
+        this.dataSourceClients.paginator = this.clientPaginator;
+        this.dataSourceClients.sort = this.clientSort;
+       
       },
       error: (err) => {
         console.error('Error loading clients', err);
@@ -43,14 +60,29 @@ export class UserListComponent implements OnInit {
   loadServiceProviders(): void {
     this.serviceProviderService.getAllServiceProviders().subscribe({
       next: (serviceProviderData) => {
+        serviceProviderData.sort((a, b) => a.id! - b.id!);
         this.serviceProviders = serviceProviderData;
-        this.serviceProviders.sort((a, b) => a.id! - b.id!);
+        
+        this.dataSourceServiceProviders = new MatTableDataSource(serviceProviderData);
+        this.dataSourceServiceProviders.paginator = this.serviceProviderPaginator;
+        this.dataSourceServiceProviders.sort = this.serviceProviderSort;
       },
       error: (err) => {
         console.error('Error loading service providers', err);
       }
     });
   }
+
+ applyClientFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.dataSourceClients.filter = filterValue.trim().toLowerCase();
+}
+
+applyServiceProviderFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.dataSourceServiceProviders.filter = filterValue.trim().toLowerCase();
+}
+
 
   deleteClient(id: number): void {
     this.userService.deleteUser(id).subscribe({
@@ -86,7 +118,6 @@ export class UserListComponent implements OnInit {
       if (result) {
         this.notificationService.showNotification('Client added successfully', "success-snackbar");
         this.loadClients();
-        
       }
     });
   }
@@ -132,4 +163,5 @@ export class UserListComponent implements OnInit {
       }
     });
   }
+  
 }

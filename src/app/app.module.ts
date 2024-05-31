@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CategoryListComponent } from './admin/category-list/category-list.component';
@@ -42,6 +45,8 @@ import { MatCardModule } from '@angular/material/card';
     LoginComponent
   ],
   imports: [
+    MatPaginatorModule,
+    MatSortModule,
     MatCardModule,
     MatSnackBarModule,
     MatSelectModule,

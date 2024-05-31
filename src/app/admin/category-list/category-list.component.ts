@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from '../category.service';
 import { Category } from '../Models/category.model';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoryDialogComponent } from '../category-dialog/category-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationService } from '../notification.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements OnInit {
-  categories: Category[] = [];
-
+  displayedColumns: string[] = ['id', 'name', 'actions'];
+  dataSource!: MatTableDataSource<Category> ;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   constructor( private notificationService: NotificationService,private categoryService: CategoryService,private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -22,15 +27,20 @@ export class CategoryListComponent implements OnInit {
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
-        this.categories = data;
-        this.categories.sort((a, b) => a.id! - b.id!);
+        data.sort((a, b) => a.id! - b.id!);
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
       error: (err) => {
         console.error('Error loading categories', err);
       }
     });
   }
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
   deleteCategory(id: number): void {
     this.categoryService.deleteCategory(id).subscribe( {
       next: () => {

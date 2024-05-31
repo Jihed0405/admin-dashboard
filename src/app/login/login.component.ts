@@ -26,7 +26,13 @@ export class LoginComponent {
       }
       },
       (error: any) => {
-        this.errorMessage = 'Invalid username or password';
+        if (error.status === 0) {
+          // Network error or no connection to backend
+          this.errorMessage = 'Check your connection to the backend';
+        } else {
+          // Other errors (e.g., invalid credentials)
+          this.errorMessage = 'Invalid username or password';
+        }
       }
     );
   }

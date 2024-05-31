@@ -74,10 +74,10 @@ export class UserDialogComponent {
   }
 
   save(): void {
-    if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.password) {
+   /* if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.password) {
       this.notificationService.showNotification('Please fill in all required fields', 'error-snackbar');
       return;
-    }
+    }*/
 
     if (this.userType === UserType.SERVICE_PROVIDER) {
       const serviceProvider = this.user as ServiceProvider;
