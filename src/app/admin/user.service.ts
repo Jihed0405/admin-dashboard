@@ -49,21 +49,27 @@ export class UserService {
         if (error.status === 0) {
             errorMessage = 'No connection. Verify application is running.';
         } else if (error.status >= 400 && error.status < 500) {
+        
+
             if (typeof error.error === 'string') {
+            
                 try {
                     const serverError = JSON.parse(error.error);
+                   
                     if (serverError.message) {
                         errorMessage = this.extractAndSortMessages(serverError.message);
                     }
                 } catch (e) {
+                 
                     errorMessage = error.error;
+                   
                 }
             } else if (error.error.message) {
                 errorMessage = this.extractAndSortMessages(error.error.message);
             }
         } else if (error.status >= 500) {
             if (error) {
-                console.log(error);
+               
                 errorMessage = this.extractAndSortMessages(error.error.message);
             } else {
                 errorMessage = 'Server-side error. Please try again later.';

@@ -46,6 +46,7 @@ export class ServiceProviderService {
         errorMessage = 'No connection. Verify application is running.';
       } else if (error.status >= 400 && error.status < 500) {
         if (typeof error.error === 'string') {
+          console.log(error);
           try {
             const serverError = JSON.parse(error.error);
             if (serverError.message) {

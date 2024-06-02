@@ -95,7 +95,7 @@ export class UserDialogComponent {
             this.dialogRef.close(true);
           },
           (error) => {
-            this.notificationService.showNotification(error.message, 'error-snackbar');
+            this.notificationService.showNotification(error, 'error-snackbar');
           }
         );
       } else {
@@ -120,7 +120,7 @@ export class UserDialogComponent {
             this.dialogRef.close(true);
           },
           (error) => {
-            this.notificationService.showNotification(error.message, 'error-snackbar');
+            this.notificationService.showNotification(error, 'error-snackbar');
           }
         );
       } else {
